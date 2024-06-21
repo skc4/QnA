@@ -1,1 +1,1 @@
-# qna_jax
+# QnA
