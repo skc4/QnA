@@ -7,31 +7,21 @@ nltk.download('punkt')
 
 
 paragraphs = [
-    "In the beginning was the Word, and the Word was with God, and the Word was God.",
-    "He was with God in the beginning.",
-    "Through him all things were made; without him nothing was made that has been made.",
-    "In him was life, and that life was the light of all mankind.",
-    "The light shines in the darkness, and the darkness has not overcome it.",
-    "There was a man sent from God whose name was John.",
-    "He came as a witness to testify concerning that light, so that through him all might believe.",
-    "He himself was not the light; he came only as a witness to the light.",
-    "The true light that gives light to everyone was coming into the world.",
-    "He was in the world, and though the world was made through him, the world did not recognize him.",
-    "He came to that which was his own, but his own did not receive him.",
-    "Yet to all who did receive him, to those who believed in his name, he gave the right to become children of God children born not of natural descent, nor of human decision or a husband's will, but born of God.",
-    "The Word became flesh and made his dwelling among us. We have seen his glory, the glory of the one and only Son, who came from the Father, full of grace and truth.",
-    "Out of his fullness we have all received grace in place of grace already given.",
-    "For the law was given through Moses; grace and truth came through Jesus Christ.",
-    "No one has ever seen God, but the one and only Son, who is himself God and is in closest relationship with the Father, has made him known.",
-    "In the time of Herod king of Judea there was a priest named Zechariah, who belonged to the priestly division of Abijah; his wife Elizabeth was also a descendant of Aaron.",
-    "Both of them were righteous in the sight of God, observing all the Lord's commands and decrees blamelessly.",
-    "But they were childless because Elizabeth was not able to conceive, and they were both very old.",
-    "At that time Mary got ready and hurried to a town in the hill country of Judea, where she entered Zechariah's home and greeted Elizabeth.",
-    "When Elizabeth heard Mary's greeting, the baby leaped in her womb, and Elizabeth was filled with the Holy Spirit.",
-    "In a loud voice she exclaimed: Blessed are you among women, and blessed is the child you will bear!",
-    "But why am I so favored, that the mother of my Lord should come to me?",
-    "As soon as the sound of your greeting reached my ears, the baby in my womb leaped for joy.",
-    "Blessed is she who has believed that the Lord would fulfill his promises to her!"
+    "The Amazon rainforest, often referred to as the “lungs of the Earth,” covers approximately 5.5 million square kilometers.",
+	"It is home to an incredibly diverse range of species, including many that are yet to be discovered.",
+	"The rainforest plays a critical role in regulating the global climate by absorbing carbon dioxide and releasing oxygen.",
+	"However, deforestation poses a significant threat to this vital ecosystem, driven primarily by logging, agriculture, and mining activities.",
+	"Efforts to combat deforestation include reforestation projects and stricter enforcement of environmental laws.",
+	"Indigenous communities in the Amazon play a crucial role in preserving the rainforest through sustainable practices.",
+	"Climate change, exacerbated by deforestation, is leading to changes in rainfall patterns and more frequent extreme weather events.",
+	"Protecting the Amazon is essential not only for biodiversity but also for the overall health of our planet.",
+	"Artificial Intelligence (AI) has seen tremendous growth over the past decade, revolutionizing various industries from healthcare to finance.",
+	"Machine learning, a subset of AI, involves training algorithms on large datasets to make predictions or decisions without explicit programming.",
+	"Recent advancements in neural networks, particularly deep learning, have enabled significant improvements in image and speech recognition, natural language processing, and autonomous systems.",
+	"AI-powered tools are being used to analyze medical images, helping doctors diagnose diseases more accurately and quickly",
+	"In finance, AI algorithms are employed to detect fraudulent transactions and predict market trends.",
+	"The ethical implications of AI, including issues of bias and privacy, are subjects of ongoing debate.",
+	"Continued research and development in AI aim to create more generalizable and robust systems that can operate in a variety of real-world environments."
 ]
 
 
@@ -48,7 +38,7 @@ def get_detailed_answer(question):
 
 
 questions = [
-    "What was the name of the priest? What do you know about this person?"
+    "How does the Amazon rainforest contribute to regulating the global climate, and what are the primary threats to this ecosystem?"
 ]
 
 
