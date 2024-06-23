@@ -1,30 +1,10 @@
-import numpy as np
-import nltk
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+from rag import SimpleRAG
+from app import RAGApp
 import tkinter as tk
-from tkinter import scrolledtext
+import nltk
+import sys
 
 nltk.download('punkt')
-
-
-class SimpleRAG:
-    def __init__(self, paragraphs):
-        self.paragraphs = paragraphs
-        self.vectorizer = TfidfVectorizer().fit(paragraphs)
-        self.paragraph_vectors = self.vectorizer.transform(paragraphs)
-
-    def get_most_similar_paragraph(self, question):
-        question_vector = self.vectorizer.transform([question])
-        similarities = cosine_similarity(
-            question_vector, self.paragraph_vectors).flatten()
-        most_similar_idx = np.argmax(similarities)
-        return self.paragraphs[most_similar_idx], similarities[most_similar_idx]
-
-    def answer_question(self, question):
-        most_similar_paragraph, similarity = self.get_most_similar_paragraph(
-            question)
-        return most_similar_paragraph
 
 
 paragraphs = [
@@ -47,36 +27,9 @@ paragraphs = [
 
 rag_system = SimpleRAG(paragraphs)
 
-
-class RAGApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("QnA")
-
-        self.label = tk.Label(root, text="Enter your question:")
-        self.label.pack(pady=10)
-
-        self.entry = tk.Entry(root, width=50, justify="center")
-        self.entry.pack(pady=10)
-
-        self.button = tk.Button(root, text="Get Answer",
-                                command=self.get_answer)
-        self.button.pack(pady=10)
-
-        self.answer_label = tk.Label(root, text="Answer:")
-        self.answer_label.pack(pady=10)
-
-        self.answer_text = scrolledtext.ScrolledText(
-            root, wrap=tk.WORD, width=100, height=10)
-        self.answer_text.pack(pady=10)
-
-    def get_answer(self):
-        question = self.entry.get()
-        answer = rag_system.answer_question(question)
-        self.answer_text.delete('1.0', tk.END)
-        self.answer_text.insert(tk.INSERT, answer)
-
+def get_answer(question):
+    return rag_system.answer_question(question)
 
 root = tk.Tk()
-app = RAGApp(root)
+app = RAGApp(root, get_answer, __file__)
 root.mainloop()

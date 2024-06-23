@@ -1,6 +1,9 @@
 import nltk
 from top_k_rag import TopKRAG
 from gptj import GPTJTextGenerator
+from app import RAGApp
+import tkinter as tk
+import sys
 
 
 nltk.download('punkt')
@@ -29,7 +32,13 @@ rag_system = TopKRAG(paragraphs)
 text_generator = GPTJTextGenerator()
 
 
+def validate_input(question):
+    if not isinstance(question, str) or len(question) == 0:
+        raise ValueError("Question must be a non-empty string")
+    return question
+
 def get_detailed_answer(question):
+    question = validate_input(question)
     top_k_paragraphs = rag_system.answer_question(question, k=3)
     combined_paragraphs = " ".join(top_k_paragraphs)
     prompt = f"DOCUMENT: {combined_paragraphs} \nQUESTION:{question} \nINSTRUCTIONS: Answer the QUESTION using the DOCUMENT text above. Keep your answer ground in the facts of the DOCUMENT. If the DOCUMENT does not contain the facts to answer the QUESTION return NONE"
@@ -37,12 +46,15 @@ def get_detailed_answer(question):
     return detailed_answer
 
 
-questions = [
-    "How does the Amazon rainforest contribute to regulating the global climate, and what are the primary threats to this ecosystem?"
-]
+root = tk.Tk()
+app = RAGApp(root, get_detailed_answer, __file__)
+root.mainloop()
 
+# questions = [
+#     "How does the Amazon rainforest contribute to regulating the global climate, and what are the primary threats to this ecosystem?"
+# ]
 
-for question in questions:
-    detailed_answer = get_detailed_answer(question)
-    print(f"\nQuestion: {question}")
-    print(f"\nDetailed Answer: {detailed_answer}\n")
+# for question in questions:
+#     detailed_answer = get_detailed_answer(question)
+#     print(f"\nQuestion: {question}")
+#     print(f"\nDetailed Answer: {detailed_answer}\n")
