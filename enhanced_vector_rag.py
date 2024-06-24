@@ -6,6 +6,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+import faiss
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -18,9 +19,11 @@ class EnhancedVectorRAG:
         self.stop_words = set(stopwords.words('english'))
         self.paragraphs = [self.preprocess_text(paragraph) for paragraph in paragraphs]
         self.model = SentenceTransformer(model_name)
-        self.paragraph_vectors = self.model.encode(self.paragraphs, convert_to_tensor=True)
+        self.paragraph_vectors = self.model.encode(self.paragraphs, convert_to_numpy=True)
         self.cache = {}
         self.cache_size = cache_size
+        self.index = faiss.IndexFlatL2(self.paragraph_vectors.shape[1])
+        self.index.add(np.array(self.paragraph_vectors))
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     
     def preprocess_text(self, text):
@@ -43,22 +46,21 @@ class EnhancedVectorRAG:
             logging.info(f"Cache hit for question: {question}")
             return self.cache[cache_key]
         
-        question_vector = self.model.encode(question, convert_to_tensor=True)
-        similarities = util.pytorch_cos_sim(question_vector, self.paragraph_vectors)[0]
-        top_k_indices = similarities.argsort(descending=True)[:k]
-        top_k_paragraphs = [self.paragraphs[idx] for idx in top_k_indices]
+        question_vector = self.model.encode([question], convert_to_numpy=True)
+        distances, indices = self.index.search(np.array(question_vector), k)
+        top_k_paragraphs = [self.paragraphs[idx] for idx in indices[0]]
         
-        # Cache
+        # Cache the result
         if len(self.cache) >= self.cache_size:
-            self.cache.pop(next(iter(self.cache)))  # Remove oldest
-        self.cache[cache_key] = (top_k_paragraphs, similarities[top_k_indices].cpu().numpy())
-        
+            self.cache.pop(next(iter(self.cache)))
+        self.cache[cache_key] = top_k_paragraphs
+
         logging.info(f"Computed top {k} paragraphs for question: {question}")
-        return top_k_paragraphs, similarities[top_k_indices].cpu().numpy()
+        return top_k_paragraphs
 
     def answer_question(self, question, k=3):
         try:
-            top_k_paragraphs, similarities = self.get_top_k_paragraphs(question, k)
+            top_k_paragraphs = self.get_top_k_paragraphs(question, k)
             return top_k_paragraphs
         except Exception as e:
             logging.error(f"Error answering question: {question} - {e}")
