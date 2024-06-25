@@ -3,7 +3,6 @@ from top_k_rag import TopKRAG
 from gptj import GPTJTextGenerator
 from app import RAGApp
 import tkinter as tk
-import sys
 
 
 nltk.download('punkt')

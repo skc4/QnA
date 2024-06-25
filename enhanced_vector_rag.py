@@ -38,7 +38,9 @@ class EnhancedVectorRAG:
         return text
     
     def get_top_k_paragraphs(self, question, k=3):
+        # print("BEFORE: ", question)
         question = self.preprocess_text(question)
+        # print("AFTER: ", question)
         
         # Cache
         cache_key = hashlib.md5(question.encode('utf-8')).hexdigest()

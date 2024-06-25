@@ -3,11 +3,12 @@ from enhanced_vector_rag import EnhancedVectorRAG
 from gptj import GPTJTextGenerator
 from app import RAGApp
 import tkinter as tk
+import sys
 
 nltk.download('punkt')
 
 paragraphs = [
-    "The Amazon rainforest, often referred to as the “lungs of the Earth,” covers approximately 5.5 million square kilometers.",
+    "The Amazon rainforest, often referred to as the 'lungs of the Earth,' covers approximately 5.5 million square kilometers.",
     "It is home to an incredibly diverse range of species, including many that are yet to be discovered.",
     "The rainforest plays a critical role in regulating the global climate by absorbing carbon dioxide and releasing oxygen.",
     "However, deforestation poses a significant threat to this vital ecosystem, driven primarily by logging, agriculture, and mining activities.",
@@ -35,20 +36,26 @@ def validate_input(question):
 def get_detailed_answer(question):
     question = validate_input(question)
     top_k_paragraphs = rag_system.answer_question(question, k=3)
-    combined_paragraphs = " ".join(top_k_paragraphs)
-    prompt = f"DOCUMENT: {combined_paragraphs} \nQUESTION:{question} \nINSTRUCTIONS: Answer the QUESTION using the DOCUMENT text above. Keep your answer ground in the facts of the DOCUMENT. If the DOCUMENT does not contain the facts to answer the QUESTION return NONE"
+    combined_paragraphs = "\n\n".join(top_k_paragraphs)
+    prompt = (
+        f"DOCUMENT:\n{combined_paragraphs}\n\n",
+        f"QUESTION:\n{question}\n\n",
+        f"INSTRUCTIONS:\nAnswer the QUESTION using the information provided in the DOCUMENTS above.",
+        f"Your answer should be grounded in the facts of the DOCUMENTS. Do not include information that is not present in the DOCUMENTS.",
+        f"If the DOCUMENTS do not contain the facts to answer the QUESTION, return 'NONE'.\n\n"
+    )
     detailed_answer = text_generator.generate_text(prompt)
     return detailed_answer
 
-root = tk.Tk()
-app = RAGApp(root, get_detailed_answer, __file__)
-root.mainloop()
+# root = tk.Tk()
+# app = RAGApp(root, get_detailed_answer, __file__)
+# root.mainloop()
 
-# questions = [
-#     "How does the Amazon rainforest contribute to regulating the global climate, and what are the primary threats to this ecosystem?"
-# ]
+questions = [
+    "How does the Amazon rainforest contribute to regulating the global climate?"
+]
 
-# for question in questions:
-#     detailed_answer = get_detailed_answer(question)
-#     print(f"\nQuestion: {question}")
-#     print(f"\nDetailed Answer: {detailed_answer}\n")
+for question in questions:
+    detailed_answer = get_detailed_answer(question)
+    # print(f"\nQuestion: {question}")
+    # print(f"\nDetailed Answer: {detailed_answer}\n")
