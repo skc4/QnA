@@ -8,3 +8,8 @@ numpy==1.21.0
 faiss-cpu==1.8.0
 sentence-transformers==3.0.1
 nltk==3.8.1
+langchain_community
+pypdf
+langchain
+chromadb
+pytest
