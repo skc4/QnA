@@ -43,8 +43,8 @@ This project implements a Retrieval-Augmented Generation (RAG) system using Lang
 
 1. Clone the repository:
     ```bash
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone <https://github.com/skc4/QnA.git>
+    cd <https://github.com/skc4/QnA.git>
     ```
 
 2. Install the required packages:
